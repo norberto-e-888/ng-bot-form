@@ -24,10 +24,10 @@ npm install @ngrx/effects @ngrx/store joi
 
 ```typescript
 interface MyBotDto {
-  firstName: string;
-  lastName: string;
-  age: number;
-  favoriteColor?: string;
+	firstName: string
+	lastName: string
+	age: number
+	favoriteColor?: string
 }
 ```
 
@@ -35,33 +35,33 @@ interface MyBotDto {
 
 ```typescript
 const myBaseSteps: BotFormStep<MyBotDto>[] = [
-  {
-    key: "firstName",
-    prompt: "¿Cómo te llamas? (nombre de pila)",
-    inputType: "text",
-    validationSchema: Joi.string()
-      .required()
-      .min(3)
-      .trim()
-      .message("Tu nombre debe tener más de 2 caracteres"),
-  },
-  {
-    key: "lastName",
-    prompt: "¿Cómo te apellidas?",
-    inputType: "text",
-    validationSchema: Joi.string()
-      .required()
-      .min(2)
-      .trim()
-      .message("Tu apellido debe tener más de 1 caracter"),
-  },
-  {
-    key: "age",
-    prompt: "¿Cuál es tu edad?",
-    inputType: "text",
-    validationSchema: Joi.number().min(18).message("¡Debes ser mayor de edad!"),
-  },
-];
+	{
+		key: 'firstName',
+		prompt: '¿Cómo te llamas? (nombre de pila)',
+		inputType: 'text',
+		validationSchema: Joi.string()
+			.required()
+			.min(3)
+			.trim()
+			.message('Tu nombre debe tener más de 2 caracteres')
+	},
+	{
+		key: 'lastName',
+		prompt: '¿Cómo te apellidas?',
+		inputType: 'text',
+		validationSchema: Joi.string()
+			.required()
+			.min(2)
+			.trim()
+			.message('Tu apellido debe tener más de 1 caracter')
+	},
+	{
+		key: 'age',
+		prompt: '¿Cuál es tu edad?',
+		inputType: 'text',
+		validationSchema: Joi.number().min(18).message('¡Debes ser mayor de edad!')
+	}
+]
 ```
 
 _Notarás que no hemos incluido un paso para "favoriteColor", eso es porque solo quiero saber el color favorito de John Lennon 🎶_
@@ -70,41 +70,41 @@ _Notarás que no hemos incluido un paso para "favoriteColor", eso es porque solo
 
 ```typescript
 const myConditionedSteps: BotFormConditionedSteps<MyBotDto>[] = [
-  {
-    condition: (
-      event: BotFormSuccessfulInputPayload<MyBotDto>,
-      state: BotFormReducerState<MyBotDto>
-    ) => {
-      return (
-        event.key === "lastName" &&
-        event.input.toLowerCase() === "lennon" &&
-        state.dto.firstName.toLowerCase() === "john"
-      );
-    },
-    steps: [
-      {
-        key: "favoriteColor",
-        prompt:
-          "<secret message for johnny boy> John, my guy, what's yer favorite colour mate?",
-        inputType: "select",
-        selectOptions: [
-          {
-            text: "Red",
-            value: "red",
-          },
-          {
-            text: "Azul",
-            value: "blue",
-          },
-          {
-            text: "It depends on Yoko's mood",
-            value: "🤐",
-          },
-        ],
-      },
-    ],
-  },
-];
+	{
+		condition: (
+			event: BotFormSuccessfulInputPayload<MyBotDto>,
+			state: BotFormReducerState<MyBotDto>
+		) => {
+			return (
+				event.key === 'lastName' &&
+				event.input.toLowerCase() === 'lennon' &&
+				state.dto.firstName.toLowerCase() === 'john'
+			)
+		},
+		steps: [
+			{
+				key: 'favoriteColor',
+				prompt:
+					"<secret message for johnny boy> John, my guy, what's yer favorite colour mate?",
+				inputType: 'select',
+				selectOptions: [
+					{
+						text: 'Red',
+						value: 'red'
+					},
+					{
+						text: 'Azul',
+						value: 'blue'
+					},
+					{
+						text: "It depends on Yoko's mood",
+						value: '🤐'
+					}
+				]
+			}
+		]
+	}
+]
 ```
 
 _❗ IMPORTANTE: Notar cómo en la condición no hice referencia al DTO para leer al valor de "lastName", sino en vez lo leí del evento. De haber hecho referencia a ambos valores a tráves del DTO hubiera creado una situación donde la condición se va a hacer cierta en el resto de los pasos despúes de "lastName" ya que una vez recopilados "firstName" y "lastName" no han de cambiar (exceptuando el "undo"), así que es importante hacer referencia al evento actual siempre en nuestras condciones para que esta solo se pueda hacer cierta despúes de que el usuario de su input para el evento despúes del cuál queremos que los pasos condicionados se agreguen ❗_
@@ -113,17 +113,17 @@ _❗ IMPORTANTE: Notar cómo en la condición no hice referencia al DTO para lee
 
 ```typescript
 const myFulfillment: BotFormFulfillment<MyBotDto> = (
-  state: BotFormReducerState<MyBotDto>
+	state: BotFormReducerState<MyBotDto>
 ) => {
-  return fromFetch("http://myApi/some-end-point", {
-    method: "POST",
-    body: JSON.stringify(state.dto),
-    headers: {
-      Accept: "application/json",
-      "Content-Type": "application/json",
-    },
-  }).pipe(concatMap((response) => response.json()));
-};
+	return fromFetch('http://myApi/some-end-point', {
+		method: 'POST',
+		body: JSON.stringify(state.dto),
+		headers: {
+			Accept: 'application/json',
+			'Content-Type': 'application/json'
+		}
+	}).pipe(concatMap((response) => response.json()))
+}
 ```
 
 5. Ya que tenemos el DTO a recolectar, nuestros pasos y nuestra función de _fulfillment_, estamos listos para generar nuestro "redux kit"
@@ -132,10 +132,10 @@ const myFulfillment: BotFormFulfillment<MyBotDto> = (
 
 ```typescript
 const myBotFormReduxKit = getBotFormKit<MyBotDto>({
-  botName: "MyBot",
-  steps: myBaseSteps,
-  conditionedSteps: myConditionedSteps,
-});
+	botName: 'MyBot',
+	steps: myBaseSteps,
+	conditionedSteps: myConditionedSteps
+})
 ```
 
 Este objecto tiene el reducer, los selectors y los events de nuestro bot, pero áun falta el "motor" del form-bot
@@ -147,15 +147,15 @@ Este objecto tiene el reducer, los selectors y los events de nuestro bot, pero �
 ```typescript
 @Injectable()
 export class MyBotEffects extends BotFormEffects {
-  constructor(readonly actions: Actions, readonly store: Store) {
-    super(
-      actions,
-      store,
-      myBotFormReduxKit.events,
-      myBotFormReduxKit.selectors,
-      myFulfillment
-    );
-  }
+	constructor(readonly actions: Actions, readonly store: Store) {
+		super(
+			actions,
+			store,
+			myBotFormReduxKit.events,
+			myBotFormReduxKit.selectors,
+			myFulfillment
+		)
+	}
 }
 ```
 
@@ -163,11 +163,11 @@ export class MyBotEffects extends BotFormEffects {
 
 ```typescript
 imports: [
-  StoreModule.forRoot({
-    MyBot: myBotFormReduxKit.reducer,
-  }),
-  EffectsModule.forRoot([MyBotEffects]),
-];
+	StoreModule.forRoot({
+		MyBot: myBotFormReduxKit.reducer
+	}),
+	EffectsModule.forRoot([MyBotEffects])
+]
 ```
 
 _❗ IMPORTANTE: La llave del reducer debe ser igual al botName que le pasamos a getBotFormKit, es este caso "MyBot"❗_
@@ -180,12 +180,12 @@ npm install @ngrx/store-devtools
 
 ```typescript
 imports: [
-  StoreDevtoolsModule.instrument({
-    maxAge: 30,
-    logOnly: environment.production,
-    name: "My App",
-  }),
-];
+	StoreDevtoolsModule.instrument({
+		maxAge: 30,
+		logOnly: environment.production,
+		name: 'My App'
+	})
+]
 ```
 
 9. TO-DO: En la próxima parte explicaremos como usar los selectors y events desde el componente de chat para consumir el estado y motor que hemos creado
@@ -198,7 +198,7 @@ Distribuido bajo la licencia MIT
 
 ## Contribuir
 
-1. Forkéalo (<https://github.com/yourname/yourproject/fork>) TO-DO: Crear repo en GitHub
+1. Forkéalo (https://github.com/norberto-e-888/ng-bot-form)
 2. Create tu rama de feature (`git checkout -b feature/fooBar`)
 3. Commit tus cambios (`git commit -am 'Add some fooBar'`)
 4. Empuja a tu rama (`git push origin feature/fooBar`)
