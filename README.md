@@ -203,7 +203,3 @@ Distribuido bajo la licencia MIT
 3. Commit tus cambios (`git commit -am 'Add some fooBar'`)
 4. Empuja a tu rama (`git push origin feature/fooBar`)
 5. Crea un pull request
-
-```
-
-```
