@@ -12,7 +12,7 @@ import { botFormEventsFactory } from './lib/redux/events';
 export { BotFormEffects } from './lib/redux/effects';
 export * from './lib/typings';
 
-export const getBotFormKit = <D extends DTO, P>({
+export const getBotFormKit = <D extends DTO, P = any>({
   botName,
   steps,
   conditionedSteps,
