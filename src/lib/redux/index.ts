@@ -46,6 +46,7 @@ export const getBotFormKit = <D extends DTO, P = any>({
   };
 };
 
+export { BotFormEffects } from './effects';
 export interface GetBotFormKitArguments<D extends DTO = any> {
   name: string;
   steps: BotFormStep<D>[];

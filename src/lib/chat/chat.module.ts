@@ -2,15 +2,15 @@ import { NgModule } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { BrowserModule } from '@angular/platform-browser';
 import {
-  NbLayoutModule,
-  NbChatModule,
-  NbSpinnerModule,
-  NbSelectModule,
-  NbInputModule,
   NbCardModule,
+  NbChatModule,
   NbIconModule,
+  NbInputModule,
+  NbLayoutModule,
+  NbSelectModule,
+  NbSpinnerModule,
 } from '@nebular/theme';
-import { ChatbotComponent } from './chat/chat.component';
+import { ChatbotComponent } from './chat.component';
 
 @NgModule({
   declarations: [ChatbotComponent],
@@ -25,15 +25,6 @@ import { ChatbotComponent } from './chat/chat.component';
     BrowserModule,
     FormsModule,
   ],
-  exports: [
-    NbLayoutModule,
-    NbChatModule,
-    NbSpinnerModule,
-    NbSelectModule,
-    NbInputModule,
-    NbCardModule,
-    NbIconModule,
-    ChatbotComponent,
-  ],
+  exports: [ChatbotComponent],
 })
-export class BotFormModule {}
+export class ChatModule {}
