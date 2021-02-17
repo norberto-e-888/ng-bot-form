@@ -7,9 +7,13 @@ import {
   OnInit,
 } from '@angular/core';
 import { Store } from '@ngrx/store';
-import { BotFormMessage, BotFormSender, BotFormStep } from 'bot-form';
 import { Observable } from 'rxjs';
-import { BotFormReduxKit } from '../../public-api';
+import {
+  BotFormReduxKit,
+  BotFormMessage,
+  BotFormSender,
+  BotFormStep,
+} from '../typings';
 
 @Component({
   // tslint:disable-next-line: component-selector
