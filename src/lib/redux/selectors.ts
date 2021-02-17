@@ -114,6 +114,12 @@ export const botFormSelectorsFactory = <D extends DTO, P>(
     ({ dto }) => dto
   );
 
+  const selectIsFulfilled = createSelector<
+    any,
+    BotFormReducerState<D, P>,
+    boolean
+  >(selectBotFormState, ({ isFulfilled }) => isFulfilled);
+
   return {
     selectBotFormState,
     selectSteps,
@@ -128,6 +134,7 @@ export const botFormSelectorsFactory = <D extends DTO, P>(
     selectMessages,
     selectIsLoading,
     selectShouldUserInputBeSupressed,
+    selectIsFulfilled,
   };
 };
 

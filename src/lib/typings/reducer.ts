@@ -10,6 +10,7 @@ export interface BotFormReducerState<D extends DTO, P> {
   steps: BotFormStep<D>[];
   conditionedSteps?: BotFormConditionedSteps<D, P>[];
   messages: BotFormMessage[];
+  welcomeMessage?: string;
   dto: Partial<D>;
   fulfillmentPayload?: P;
   isComplete: boolean;
@@ -61,7 +62,7 @@ export enum BotFormSender {
 
 export interface BotFormMessage<D extends DTO = any> {
   text: string;
-  key: keyof D;
+  key: keyof D | 'welcome' | 'fulfillmentSuccess';
   sender: BotFormSender;
 }
 

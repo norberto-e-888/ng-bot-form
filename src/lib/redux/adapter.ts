@@ -94,7 +94,7 @@ export const botFormAdapterFactory = (): BotFormAdapter => {
         {
           sender: BotFormSender.Bot,
           text: event?.message as string,
-          key: 'fulfillment',
+          key: 'fulfillmentSuccess',
         },
       ],
     }),
@@ -128,16 +128,28 @@ export const botFormAdapterFactory = (): BotFormAdapter => {
       },
       isValidatingInput: false,
     }),
-    initConversation: () => (state) => ({
-      ...state,
-      messages: [
+    initConversation: () => (state) => {
+      const messages: BotFormMessage[] = [
         {
           sender: BotFormSender.Bot,
           key: state.steps[0].key as string,
           text: state.steps[0].prompt,
         },
-      ],
-    }),
+      ];
+
+      if (state.welcomeMessage) {
+        messages.unshift({
+          sender: BotFormSender.Bot,
+          key: 'welcome',
+          text: state.welcomeMessage,
+        });
+      }
+
+      return {
+        ...state,
+        messages,
+      };
+    },
     promptNextStep: (event) => (state) => {
       const {
         step: { prompt, key },
@@ -200,8 +212,13 @@ export const botFormAdapterFactory = (): BotFormAdapter => {
         ({ key }) => key === previousKey
       );
 
+      const startingIndex =
+        indexOfTheFirstMessageOfThePreviousKey === 0 && state.welcomeMessage
+          ? 1
+          : 0; // prevents the first prompt from being removed when there is a welcomeMessage
+
       const updatedMessages: BotFormMessage[] = messages.slice(
-        0,
+        startingIndex,
         indexOfTheFirstMessageOfThePreviousKey + 1
       );
 
