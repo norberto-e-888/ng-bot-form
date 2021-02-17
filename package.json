@@ -1,6 +1,6 @@
 {
   "name": "bot-form",
-  "version": "1.2.2",
+  "version": "1.2.3",
   "peerDependencies": {
     "@angular/common": "^11.0.9",
     "@angular/core": "^11.0.9",
