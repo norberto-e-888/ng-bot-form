@@ -91,7 +91,7 @@ const myConditionedSteps: BotFormConditionedSteps<MyBotDto>[] = [
       {
         key: 'favoriteColor',
         prompt:
-          "<secret message for johnny boy> John, my guy, what's yer favorite colour mate?",
+          "John, my guy, what's yer favorite colour mate?",
         inputType: 'select',
         selectOptions: [
           {
@@ -115,11 +115,11 @@ const myConditionedSteps: BotFormConditionedSteps<MyBotDto>[] = [
 
 _❗ IMPORTANTE: Notar cómo en la condición no hice referencia al DTO para leer al valor de "lastName", sino en vez lo leí del evento. De haber hecho referencia a ambos valores a tráves del DTO hubiera creado una situación donde la condición se va a hacer cierta en el resto de los pasos despúes de "lastName" ya que una vez recopilados "firstName" y "lastName" no han de cambiar (exceptuando el "undo"), así que es importante hacer referencia al evento actual siempre en nuestras condciones para que esta solo se pueda hacerse cierta despúes que el usuario ingrese input para el evento despúes del cuál queremos que los pasos condicionados se agreguen, en este caso queremos que se agreguen despúes del paso "lastName" ❗_
 
-4. Ahora vamos a definir la función que va a ser llamada cuando el evento "confirmed" sea disparado. La función va a tener acceso al estado entero, pero supongamos que solo queremos enviar el dto recopilado como body en una consulta POST. La función debe devolver un observable con la data que queremos tener disponible como payload del evento _fulfillmentSuccess_ y que será guardada en el estado bajo la llave _fulfillmentPayload_ y debe cumplir con la interface (la propiedad _message_ será mostrada como un último mensaje de éxito de parte del bot) ⬇
+4. Ahora vamos a definir la función que va a ser llamada cuando el evento "confirmed" sea disparado. La función va a tener acceso al estado entero, pero supongamos que solo queremos enviar el dto recopilado como body en una consulta POST. La función debe devolver un observable con la data que queremos tener disponible como payload del evento _fulfillmentSuccess_ y que será guardada en el estado bajo la llave _fulfillmentPayload_ y debe cumplir con la interface ⬇
 
 ```typescript
 interface BotFormFulfillmentSuccessPayload {
-  message: string;
+  message: string; // se mostrará como un último mensaje de parte del bot
   data: any;
 }
 ```
@@ -153,9 +153,10 @@ import { getBotFormKit } from 'bot-form'
 ...
 
 export const myBotFormReduxKit = getBotFormKit<MyBotDto>({
-  botName: 'MyBot',
+  name: 'MyBot',
   steps: myBaseSteps,
   conditionedSteps: myConditionedSteps,
+  welcomeMessage: "Bienvenid@" // propiedad opcional, si es pasada, se mostrará como primer mensaje
 });
 ```
 
@@ -202,7 +203,7 @@ imports: [
 ];
 ```
 
-_❗ IMPORTANTE: La llave del reducer debe ser igual al botName que le pasamos a getBotFormKit, es este caso "MyBot"❗_
+_❗ IMPORTANTE: La llave del reducer debe ser igual al name que le pasamos a getBotFormKit, es este caso "MyBot"❗_
 
 8. Instalamos @ngrx/store-devtools
 
@@ -387,6 +388,8 @@ interface BotFormSelectInputOption {
 
 ## Validaciones del lado del servidor
 
+La propiedad _asyncValidator_ nos permite correr una función asincróna arbitraria cuyo resultado será interpretado como una validación éxitosa o fallida del paso en cuestión
+
 ```typescript
 ...
   {
@@ -400,7 +403,7 @@ interface BotFormSelectInputOption {
       .message('Tu apellido debe tener más de 1 caracter'),
     asyncValidator: async (value, state) => {
       // value es el input que el usuario ingreso para este paso y state es el estado entero
-      // mandale toda la data releventa a tu servidor para que valide el input
+      // mada toda la data relevante a tu servidor para que valide el input
       const response = await fetch(`http://myApi/is-last-name-valid/${value}`);
       return response.json() as BotFormAsyncValidationResponse;
     },
@@ -413,7 +416,7 @@ interface BotFormSelectInputOption {
 ```typescript
 interface BotFormAsyncValidationResponse {
   isValid: boolean;
-  error?: string;
+  error?: string; // mensaje mostrado por el bot
 }
 ```
 
@@ -423,7 +426,7 @@ interface BotFormAsyncValidationResponse {
 
 ## Eventos y seleccionadores disponibles
 
-_pseudo-javascript_
+_pseudo javascript_
 
 ```javascript
  reduxKit.events => {
