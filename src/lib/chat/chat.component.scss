@@ -1,0 +1,28 @@
+.simulation-chat {
+  &__messages {
+    height: 90vh;
+    overflow-y: scroll;
+  }
+
+  &__user-input {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    margin-top: 0.5rem;
+
+    input {
+      max-width: none !important;
+      width: 100%;
+    }
+
+    button {
+      height: 40px;
+      cursor: pointer;
+    }
+
+    &__select {
+      width: 100%;
+      max-width: none !important;
+    }
+  }
+}

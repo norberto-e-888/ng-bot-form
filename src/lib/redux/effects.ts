@@ -1,5 +1,4 @@
 import { HttpErrorResponse } from '@angular/common/http';
-import { Injectable } from '@angular/core';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { Store } from '@ngrx/store';
 import { of } from 'rxjs';
@@ -22,11 +21,10 @@ import { BotFormFulfillment } from '../typings/effects';
 import { BotFormEvents } from './events';
 import { BotFormSelectors } from './selectors';
 
-@Injectable()
 export class BotFormEffects {
   constructor(
     protected actions$: Actions,
-    protected store: Store<any>,
+    protected store: Store,
     protected events: BotFormEvents,
     protected selectors: BotFormSelectors,
     protected fulfillment: BotFormFulfillment

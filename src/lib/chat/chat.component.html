@@ -1,0 +1,83 @@
+<section class="simulation-chat">
+  <nb-chat
+    title="Onboarding Proof of Concept"
+    class="simulation-chat__messages"
+  >
+    <nb-chat-message
+      *ngFor="let message of messages$ | async"
+      type="text"
+      [message]="message.text"
+      [sender]="message.sender"
+      [reply]="isMessageAReply(message.sender)"
+    >
+    </nb-chat-message>
+    <nb-chat-message
+      *ngIf="isLoading$ | async"
+      [nbSpinner]="!!(isLoading$ | async)"
+      nbSpinnerStatus="info"
+      type="text"
+      avatar="/assets/bot.png"
+      message="..."
+    >
+    </nb-chat-message>
+  </nb-chat>
+  <nb-card class="simulation-chat__user-input">
+    <button
+      *ngIf="isComplete$ | async"
+      (click)="handleCancelConfirmClick()"
+      [disabled]="isFulfilled$ | async"
+    >
+      <nb-icon icon="close-outline"></nb-icon>
+    </button>
+    <button
+      *ngIf="!(shouldUserInputBeSupressed$ | async)"
+      (click)="handleUndoClick()"
+      [disabled]="isFulfilled$ | async"
+    >
+      <nb-icon icon="undo-outline"></nb-icon>
+    </button>
+    <input
+      *ngIf="
+        (activeStep$ | async)?.inputType === 'text' &&
+        !(shouldUserInputBeSupressed$ | async)
+      "
+      [(ngModel)]="input"
+      nbInput
+      (keyup.enter)="handleTextInput()"
+    />
+    <nb-select
+      placeholder="Elige..."
+      class="simulation-chat__user-input__select"
+      [disabled]="shouldUserInputBeSupressed$ | async"
+      *ngIf="
+        (activeStep$ | async)?.inputType === 'select' &&
+        !(shouldUserInputBeSupressed$ | async)
+      "
+    >
+      <nb-option
+        *ngFor="let option of (activeStep$ | async)?.selectOptions || []"
+        [value]="option.value"
+        (selectionChange)="handleSelectInput($event)"
+      >
+        {{ option.text }}
+      </nb-option>
+    </nb-select>
+    <button
+      *ngIf="
+        (activeStep$ | async)?.inputType === 'text' &&
+        !(shouldUserInputBeSupressed$ | async)
+      "
+      (click)="handleTextInput()"
+      [disabled]="isFulfilled$ | async"
+    >
+      <nb-icon icon="message-circle-outline"></nb-icon>
+    </button>
+    <button
+      *ngIf="isComplete$ | async"
+      (click)="handleConfirmClick()"
+      [disabled]="isFulfilled$ | async"
+    >
+      <nb-icon icon="checkmark-outline"></nb-icon>
+    </button>
+  </nb-card>
+</section>

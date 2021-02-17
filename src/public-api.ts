@@ -10,6 +10,7 @@ import { botFormReducerFactory } from './lib/redux/reducer';
 import { botFormSelectorsFactory } from './lib/redux/selectors';
 import { botFormEventsFactory } from './lib/redux/events';
 export { BotFormEffects } from './lib/redux/effects';
+export { BotFormModule } from './lib/bot-form.module';
 export * from './lib/typings';
 
 export const getBotFormKit = <D extends DTO, P = any>({
@@ -55,3 +56,5 @@ export interface GetBotFormKitArguments<D extends DTO = any> {
   conditionedSteps: BotFormConditionedSteps<D>[];
   welcomeMessage?: string;
 }
+
+export type BotFormReduxKit = ReturnType<typeof getBotFormKit>;
