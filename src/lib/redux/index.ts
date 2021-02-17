@@ -9,12 +9,13 @@ import { botFormEventsFactory } from './events';
 import { botFormReducerFactory } from './reducer';
 import { botFormSelectorsFactory } from './selectors';
 
-export const getBotFormKit = <D extends DTO, P = any>({
+// tslint:disable-next-line: typedef
+export function getBotFormKit<D extends DTO, P = any>({
   name,
   steps,
   conditionedSteps,
   welcomeMessage,
-}: GetBotFormKitArguments<D>) => {
+}: GetBotFormKitArguments<D>) {
   if (!steps.length) {
     throw Error('[Bot Form "getBotFormKit"] Steps must have at least 1 entry!');
   }
@@ -44,7 +45,7 @@ export const getBotFormKit = <D extends DTO, P = any>({
     selectors,
     reducer,
   };
-};
+}
 
 export { BotFormEffects } from './effects';
 export interface GetBotFormKitArguments<D extends DTO = any> {
