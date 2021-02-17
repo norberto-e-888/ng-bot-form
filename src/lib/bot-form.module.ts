@@ -33,6 +33,7 @@ import { ChatbotComponent } from './chat/chat.component';
     NbInputModule,
     NbCardModule,
     NbIconModule,
+    ChatbotComponent,
   ],
 })
 export class BotFormModule {}
