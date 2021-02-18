@@ -222,7 +222,7 @@ Tus imports quedarian así
 imports: [
   ...,
   StoreModule.forRoot({
-      MyBot: myBotFormReduxKit.myFormBotReducer,
+      MyBot: myFormBotReducer,
   }),
   EffectsModule.forRoot([MyBotEffects]),
   ...,
