@@ -203,7 +203,31 @@ imports: [
 ];
 ```
 
-_❗ IMPORTANTE: La llave del reducer debe ser igual al name que le pasamos a getBotFormKit, es este caso "MyBot"❗_
+_❗ IMPORTANTE: La llave del reducer debe ser igual al name que le pasamos a getBotFormKit, es este caso "MyBot"_
+
+_❗ IMPORTANTE: Es posible que tengas que crear la siguiente función (depende de si estas usando Ivy o no) para hacer referencia el reducer en el decorador @NgModule_
+
+```typescript
+export function myFormBotReducer(
+  state: BotFormReducerState<any, any> | undefined,
+  action: Action
+) {
+  return myBotFormReduxKit.reducer(state, action);
+}
+```
+
+Tus imports quedarian así
+
+```typescript
+imports: [
+  ...,
+  StoreModule.forRoot({
+      MyBot: myBotFormReduxKit.myFormBotReducer,
+  }),
+  EffectsModule.forRoot([MyBotEffects]),
+  ...,
+]
+```
 
 8. Instalamos @ngrx/store-devtools
 
